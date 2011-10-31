@@ -1,10 +1,12 @@
 Contents:
 --------
-
 applications/	: Android demo applications.
 
 directory/	: POBICOS Registry & Forwarder service.
 
-middleware/	: The extra files for the Android platform (NesC code).
+middleware/	: The extra files for the Android platform (NesC code). Based on
+		  SVN Revision 3142 of the POBICOS repository. 
 
 PoClient/	: Android application.
+
+
