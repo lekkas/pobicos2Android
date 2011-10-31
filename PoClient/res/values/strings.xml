@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello"><b>Console</b></string>
+    <string name="app_name">POBICOS client</string>
+    <string name="startButton">Start testApp</string>
+    <string name="killButton">Kill testApp</string>
+    <string name="statusTextView">No app loaded.</string>
+    <string name="statusDisconnected">Disconnected.</string>
+    <string name="statusConnected">Connected.</string>
+    <string name="menu_exit">Shutdown</string>
+    <string name="menu_pass">Application Pill Mode</string>
+</resources>

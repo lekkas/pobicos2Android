@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node:node xmlns:node="http://www.ict-pobicos.eu/node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.ict-pobicos.eu node.xsd">
+    <name>androidNode</name>
+    <description>Android Node</description>
+    <platform xlink:href="../../middleware/components/platforms/android">android</platform>
+    <communication xlink:href="../../middleware/components/communications/zigbee">zigbee</communication>
+    <entity xlink:href="../../middleware/components/entities/regular">regular</entity>
+    <resources>
+        <resource xlink:href="./anroidNode_res.xml">androidNode_res.xml</resource>
+    </resources>
+    <descriptors>
+        <descriptor xlink:href="../../middleware/definitions/domain/descriptors/ObjectByProduct/PONGO_MONITOR__CONSUMER_ELECTRONICS_OBJECT.xml">PONGO_MONITOR__CONSUMER_ELECTRONICS_OBJECT.xml</descriptor>        
+    </descriptors>
+</node:node>

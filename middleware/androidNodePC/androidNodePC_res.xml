@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<res:resource xmlns:res="http://www.ict-pobicos.eu/resource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.ict-pobicos.eu resource.xsd">
+    <name>androidNodePC_res</name>
+    <description>This file was created manually.</description>
+    <primitives>
+
+        <instruction>
+            <definition xlink:href="../../middleware/definitions/domain/instructions/Instruction/pongiAlertByDisplayingText.xml">pongiAlertByDisplayingText.xml</definition>
+            <implementation xlink:href="../../middleware/components/resources/androidNodePC">androidNodePC</implementation>
+        </instruction>
+
+    </primitives>
+</res:resource>

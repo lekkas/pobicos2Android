@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:stretchColumns="*" 
+    android:background="#fffafa" android:layout_height="fill_parent" android:layout_width="fill_parent">
+    <TableRow>
+        <ImageView android:src="@drawable/pobicos_winner" 
+        	android:id="@+id/imageView1" 
+        	android:layout_height="wrap_content" 
+        	android:layout_width="wrap_content">
+        </ImageView>
+        <TextView
+            android:text="@string/hello"
+            android:textColor="#000000"
+            android:id="@+id/logoText" 
+            android:paddingTop="15px"
+            android:gravity="left"
+            android:layout_height="fill_parent"
+            android:textSize="25sp"  />
+    </TableRow>
+    <TableRow android:paddingTop="30px">
+    </TableRow>
+    <TableRow android:paddingTop="30px">
+    <Button android:id="@+id/startButton"
+    		android:text="@string/startButton" 
+    		android:layout_weight="1" 
+    		android:layout_width="wrap_content" 
+    		android:layout_gravity="center"/>
+    </TableRow>
+    <TableRow android:paddingTop="50px">
+    	<Button android:id="@+id/killButton"
+    		android:text="@string/killButton" 
+    		android:layout_weight="1" 
+    		android:layout_gravity="center" android:layout_width="wrap_content"/>
+    </TableRow>
+    <TableRow android:paddingTop="50px">
+        <TextView 
+        	android:text="@string/statusTextView"
+        	android:textSize="25sp"
+        	android:gravity="center"
+        	android:layout_height="wrap_content" 
+        	android:id="@+id/appStatusText" 
+        	android:layout_width="wrap_content" 
+        	android:layout_weight="1" 
+        	android:layout_gravity="center">
+        </TextView>
+    </TableRow>
+   
+</TableLayout>

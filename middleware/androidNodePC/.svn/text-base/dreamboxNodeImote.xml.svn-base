@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node:node xmlns:node="http://www.ict-pobicos.eu/node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.ict-pobicos.eu node.xsd">
+    <name>dreamboxNodeImote</name>
+    <description>Dreambox Node</description>
+    <platform xlink:href="../../middleware/components/platforms/imote2">imote2</platform>
+    <communication xlink:href="../../middleware/components/communications/zigbee">zigbee</communication>
+    <entity xlink:href="../../middleware/components/entities/GUIObject">GUIObject</entity>
+    <resources>
+        <resource xlink:href="./dreamboxNodeImote_res.xml">dreamboxNodeImote_res.xml</resource>
+    </resources>
+    <descriptors>
+        <descriptor xlink:href="../../middleware/definitions/domain/descriptors/ObjectByProduct/PONGO_TV.xml">PONGO_TV.xml</descriptor>        
+    </descriptors>
+</node:node>

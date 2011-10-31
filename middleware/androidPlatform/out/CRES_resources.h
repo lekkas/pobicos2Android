@@ -1,0 +1,93 @@
+/* Resources used in CRES demo, for the virtual node resource access */
+
+// PONGE_TEMPERATURE_TOO_LOW					0x235c0000U
+#define PONGE_TEMPERATURE_TOO_LOW_HI 			0x23
+#define PONGE_TEMPERATURE_TOO_LOW_LO 			0x5c
+
+// PONGE_TEMPERATURE_TOO_HIGH					0x135c0000U
+#define PONGE_TEMPERATURE_TOO_HIGH_HI 			0x13
+#define PONGE_TEMPERATURE_TOO_HIGH_LO 			0x5c
+
+// PONGE_BRIGHTNESS_TOO_LOW						0x215c0000U
+#define PONGE_BRIGHTNESS_TOO_LOW_HI 			0x21
+#define PONGE_BRIGHTNESS_TOO_LOW_LO 			0x5c
+
+// PONGE_BRIGHTNESS_TOO_HIGH					0x115c0000U
+#define PONGE_BRIGHTNESS_TOO_HIGH_HI 			0x11
+#define PONGE_BRIGHTNESS_TOO_HIGH_LO 			0x5c
+
+// PONGE_HUMAN_PRESENCE_DETECTED   				0x41c00000U
+#define PONGE_HUMAN_PRESENCE_DETECTED_HI 		0x41
+#define PONGE_HUMAN_PRESENCE_DETECTED_LO 		0xc0
+
+// PONGE_HUMAN_ABSENCE_DETECTED   				0x21c00000U
+#define PONGE_HUMAN_ABSENCE_DETECTED_HI 		0x21
+#define PONGE_HUMAN_ABSENCE_DETECTED_LO 		0xc0
+
+// PONGE_OBJECT_SWITCHED_OFF					0x94c00000U
+#define PONGE_OBJECT_SWITCHED_OFF_HI 			0x94
+#define PONGE_OBJECT_SWITCHED_OFF_LO 			0xc0
+
+// PONGE_OBJECT_SWITCHED_ON						0xa4c00000U
+#define PONGE_OBJECT_SWITCHED_ON_HI 			0xa4
+#define PONGE_OBJECT_SWITCHED_ON_LO 			0xc0
+
+// pongiSwitchOn								0xa13d0000
+#define PONGI_SWITCH_ON_HI 						0xa1
+#define PONGI_SWITCH_ON_LO 						0x3d
+
+// SwitchOff									0x913d0000
+#define PONGI_SWITCH_OFF_HI 					0x91
+#define PONGI_SWITCH_OFF_LO 					0x3d
+
+// GetCurrentPowerConsumption					0x31d00000
+#define PONGI_GET_CURRENT_POWER_CONSUMPTION_HI 	0x31
+#define PONGI_GET_CURRENT_POWER_CONSUMPTION_LO 	0xd0
+
+// SetFanSpeedPercentage						0x433d0000
+#define PONGI_SET_FAN_SPEED_PERCENTAGE_HI 		0x43
+#define PONGI_SET_FAN_SPEED_PERCENTAGE_LO 		0x3d
+
+// GetFanSpeedPercentage						0x61d00000
+#define PONGI_GET_FAN_SPEED_PERCENTAGE_HI 		0x61
+#define PONGI_GET_FAN_SPEED_PERCENTAGE_LO 		0xd0
+
+// GetBrightness								0x11d00000
+#define PONGI_GET_BRIGHTNESS_HI					0x11
+#define PONGI_GET_BRIGHTNESS_LO					0xd0
+
+// TurnUpBrightness								0x323d0000
+#define PONGI_TURN_UP_BRIGHTNESS_HI 			0x32
+#define PONGI_TURN_UP_BRIGHTNESS_LO 			0x3d
+
+// TurnDownBrightness							0x123d0000
+#define PONGI_TURN_DOWN_BRIGHTNESS_HI 			0x12
+#define PONGI_TURN_DOWN_BRIGHTNESS_LO 			0x3d
+
+// TurnUpTemp									0x423d0000
+#define PONGI_TURN_UP_TEMP_HI 					0x42
+#define PONGI_TURN_UP_TEMP_LO 					0x3d
+
+// TurnDownTemp									0x223d0000
+#define PONGI_TURN_DOWN_TEMP_HI 				0x22
+#define PONGI_TURN_DOWN_TEMP_LO 				0x3d
+
+// GetTemp										0x81d00000
+#define PONGI_GET_TEMP_HI 						0x81
+#define PONGI_GET_TEMP_LO 						0xd0
+
+// SetTemp										0x633d0000
+#define PONGI_SET_TEMP_HI 						0x63
+#define PONGI_SET_TEMP_LO 						0x3d
+
+// IsOn											0xb1d00000
+#define PONGI_IS_ON_HI 							0xb1
+#define PONGI_IS_ON_LO 							0xd0
+
+// SetBrightness								0x133d0000
+#define PONGI_SET_BRIGHTNESS_HI					0x13
+#define PONGI_SET_BRIGHTNESS_LO					0x3d
+
+// SetTempRange									0x733d0000
+#define PONGI_SET_TEMP_RANGE_HI					0x73
+#define PONGI_SET_TEMP_RANGE_LO					0x3d

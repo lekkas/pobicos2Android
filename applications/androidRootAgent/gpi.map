@@ -1,0 +1,3 @@
+pongiPoBuildUpObjectQualifier = 0x1002c;
+pongiPoCreateNonGenericAgents = 0x10004;
+pongiPoEnableEvent = 0x10000;

@@ -1,0 +1,102 @@
+GAS LISTING /tmp/cc9qHwPf.s 			page 1
+
+
+   1               		.file	"androidRootAgent.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  10               		.section	.events.PoChildCreatedEvent,"ax",@progbits
+  11               	.global	EVENT_PoChildCreatedEvent
+  13               	EVENT_PoChildCreatedEvent:
+  14               	/* prologue: function */
+  15               	/* frame size = 0 */
+  16               	/* epilogue start */
+  17 0000 0895      		ret
+  19               		.section	.events.PoInitEvent,"ax",@progbits
+  20               	.global	EVENT_PoInitEvent
+  22               	EVENT_PoInitEvent:
+  23 0000 CF92      		push r12
+  24 0002 DF92      		push r13
+  25 0004 EF92      		push r14
+  26 0006 FF92      		push r15
+  27 0008 0F93      		push r16
+  28 000a 1F93      		push r17
+  29 000c DF93      		push r29
+  30 000e CF93      		push r28
+  31 0010 CDB7      		in r28,__SP_L__
+  32 0012 DEB7      		in r29,__SP_H__
+  33 0014 C254      		subi r28,lo8(-(-66))
+  34 0016 D040      		sbci r29,hi8(-(-66))
+  35 0018 DEBF      		out __SP_H__,r29
+  36 001a CDBF      		out __SP_L__,r28
+  37               	/* prologue: function */
+  38               	/* frame size = 66 */
+  39 001c 63E0      		ldi r22,lo8(3)
+  40 001e 70E0      		ldi r23,hi8(3)
+  41 0020 80E0      		ldi r24,hlo8(3)
+  42 0022 90E0      		ldi r25,hhi8(3)
+  43 0024 0E94 0000 		call pongiPoEnableEvent
+  44 0028 8E01      		movw r16,r28
+  45 002a 0F5F      		subi r16,lo8(-(1))
+  46 002c 1F4F      		sbci r17,hi8(-(1))
+  47 002e C801      		movw r24,r16
+  48 0030 61E0      		ldi r22,lo8(1)
+  49 0032 20E0      		ldi r18,lo8(555624192)
+  50 0034 37E2      		ldi r19,hi8(555624192)
+  51 0036 4EE1      		ldi r20,hlo8(555624192)
+  52 0038 51E2      		ldi r21,hhi8(555624192)
+  53 003a 0E94 0000 		call pongiPoBuildUpObjectQualifier
+  54 003e 6FEF      		ldi r22,lo8(-2147418113)
+  55 0040 7FEF      		ldi r23,hi8(-2147418113)
+  56 0042 80E0      		ldi r24,hlo8(-2147418113)
+  57 0044 90E8      		ldi r25,hhi8(-2147418113)
+  58 0046 A801      		movw r20,r16
+  59 0048 20E0      		ldi r18,lo8(0)
+  60 004a 00E0      		ldi r16,lo8(0)
+GAS LISTING /tmp/cc9qHwPf.s 			page 2
+
+
+  61 004c 10E0      		ldi r17,hi8(0)
+  62 004e CC24      		clr r12
+  63 0050 DD24      		clr r13
+  64 0052 7601      		movw r14,r12
+  65 0054 0E94 0000 		call pongiPoCreateNonGenericAgents
+  66               	/* epilogue start */
+  67 0058 CE5B      		subi r28,lo8(-(66))
+  68 005a DF4F      		sbci r29,hi8(-(66))
+  69 005c DEBF      		out __SP_H__,r29
+  70 005e CDBF      		out __SP_L__,r28
+  71 0060 CF91      		pop r28
+  72 0062 DF91      		pop r29
+  73 0064 1F91      		pop r17
+  74 0066 0F91      		pop r16
+  75 0068 FF90      		pop r15
+  76 006a EF90      		pop r14
+  77 006c DF90      		pop r13
+  78 006e CF90      		pop r12
+  79 0070 0895      		ret
+GAS LISTING /tmp/cc9qHwPf.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 androidRootAgent.c
+     /tmp/cc9qHwPf.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc9qHwPf.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc9qHwPf.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc9qHwPf.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc9qHwPf.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc9qHwPf.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc9qHwPf.s:13     .events.PoChildCreatedEvent:00000000 EVENT_PoChildCreatedEvent
+     /tmp/cc9qHwPf.s:22     .events.PoInitEvent:00000000 EVENT_PoInitEvent
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+pongiPoEnableEvent
+pongiPoBuildUpObjectQualifier
+pongiPoCreateNonGenericAgents

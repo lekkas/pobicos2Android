@@ -1,0 +1,133 @@
+#include "middleware.h"
+
+#define PO_COMM_VIRTUAL_FILTER_MAX_PAYLOAD_LEN		106
+#define PO_COMM_GATEWAY_ADDR						0x0000
+
+#define IS_ADDR_VIRTUAL(addr) (((addr >= VIRTUAL_POOL_START) && (addr < (VIRTUAL_POOL_START+VIRTUAL_POOL_RANGE))) || (addr == PO_COMM_GATEWAY_ADDR)) ? TRUE : FALSE
+#define IS_MSG_VIRTUAL(type) ((type == PO_COMM_HDR_VIRTUAL_DATAGRAM) || (type == PO_COMM_HDR_VIRTUAL_RELIABLE) || (type == PO_COMM_HDR_VIRTUAL_ACK)) ? TRUE : FALSE
+
+module PoCommVirtualFilterM{
+	provides interface Init;
+	provides interface PoReliableTransportI;
+	provides interface PoDatagramTransportI;
+	uses interface PoReliableTransportI as SubReliable;
+	uses interface PoDatagramTransportI as SubDatagram;
+	uses interface PoNetworkMngrI;
+}
+implementation{
+
+	addrtype myAddr = 0xffff;
+	
+	command error_t Init.init(){
+		return SUCCESS;
+	}
+	
+	command int PoDatagramTransportI.sendMsg(addrtype Addr, int Hops, PoMsg_t BEMsg){
+		PoMsg tempMsg;	//PoRadioMsg?
+		
+		if(myAddr == 0xffff){
+			if(call PoNetworkMngrI.getMyNetworkAddr(&myAddr) != PO_COMM_OK){
+				//the message cannot be delivered because we dont know the source address yet
+				dbg(DBG_WARNING, "PoCommVirtualFilterM: (line %d) not started\n", __LINE__);
+				return PO_COMM_NOT_STARTED;
+			}
+		}
+		
+		if(BEMsg->len > PO_COMM_VIRTUAL_FILTER_MAX_PAYLOAD_LEN){
+			dbg(DBG_WARNING, "PoCommVirtualFilterM: (line %d) too long msg\n", __LINE__);
+			return PO_COMM_MSG_TOO_LARGE;
+		}
+
+		dbg("PoCommVirtualFilterM", "PoCommVirtualFilterM: tx addr change: source = 0x%04x, dest = 0x%04x\n", myAddr, Addr);
+		/*
+		 * 
+		//change to virtual header type
+		BEMsg->data[PO_COMM_HDR_TYPE] += 3;
+			
+		//virtual footer (source and dest addresses)
+		BEMsg->data[BEMsg->len] = (myAddr & 0xff00) >> 8;
+		BEMsg->data[BEMsg->len+1] = myAddr & 0x00ff;
+		BEMsg->data[BEMsg->len+2] = (Addr & 0xff00) >> 8;
+		BEMsg->data[BEMsg->len+3] = Addr & 0x00ff; 
+			
+		//msg length extended by the virtual footer
+		BEMsg->len += 4;
+
+		return call SubDatagram.sendMsg(Addr, Hops, BEMsg);
+		*/
+		
+		memcpy(&tempMsg, BEMsg, sizeof(PoMsg));
+		
+		//change to virtual header type
+		tempMsg.data[PO_COMM_HDR_TYPE] += 3;
+			
+		//virtual footer (source and dest addresses)
+		tempMsg.data[tempMsg.len] = (myAddr & 0xff00) >> 8;
+		tempMsg.data[tempMsg.len+1] = myAddr & 0x00ff;
+		tempMsg.data[tempMsg.len+2] = (Addr & 0xff00) >> 8;
+		tempMsg.data[tempMsg.len+3] = Addr & 0x00ff; 
+			
+		//msg length extended by the virtual footer
+		tempMsg.len += 4;
+
+		return call SubDatagram.sendMsg(Addr, Hops, &tempMsg);
+	}
+	
+	command int PoReliableTransportI.sendMsg(addrtype Addr, PoMsg_t RelMsg, int Retries, int *MsgID){
+		//should not be called
+		return call SubReliable.sendMsg(Addr, RelMsg, Retries, MsgID);
+	}
+	
+	event void SubDatagram.msgArrived(addrtype Addr, int Hops, PoMsg_t BEMsg){
+		addrtype source, dest;
+		
+		if(BEMsg->len > PO_COMM_VIRTUAL_FILTER_MAX_PAYLOAD_LEN){
+			dbg(DBG_WARNING, "PoCommVirtualFilterM: (line %d) too long msg\n", __LINE__);
+			return;
+		}
+		
+		//change to normal header type
+		BEMsg->data[PO_COMM_HDR_TYPE] -= 3;
+			
+		//source and dest addresses from the virtual footer
+		source = BEMsg->data[BEMsg->len-4] << 8 | BEMsg->data[BEMsg->len-3];
+		dest = BEMsg->data[BEMsg->len-2] << 8 | BEMsg->data[BEMsg->len-1];
+			
+		//msg length decremented by the virtual footer size
+		BEMsg->len -= 4;
+			
+		if(dest != myAddr && dest != PO_BROADCAST_ADDR){
+			int i;
+			
+			dbg(DBG_WARNING, "PoCommVirtualFilterM: (line %d) dest (0x%04x) != myAddr (0x%04x)\n", __LINE__, dest, myAddr);
+			
+			for(i=0; i< BEMsg->len; i++){
+				dbg("PoCommVirtualFilterM", "PoCommVirtualFilterM: BEMsg->data[%d] = 0x%02x\n", i, BEMsg->data[i]);
+			}
+			
+			return;
+		}
+			
+		dbg("PoCommVirtualFilterM", "PoCommVirtualFilterM: rx addr change: source = 0x%04x, dest = 0x%04x\n", source, dest);
+			
+		signal PoDatagramTransportI.msgArrived(source, Hops, BEMsg);
+	}
+	
+	event void SubReliable.msgArrived(addrtype Addr, PoMsg_t RelMsg){
+		signal PoReliableTransportI.msgArrived(Addr, RelMsg);
+	}
+
+	event void SubReliable.MsgSendresult(addrtype Addr, int MsgID, int Result){
+		signal PoReliableTransportI.MsgSendresult(Addr, MsgID, Result);
+	}
+
+	event void PoNetworkMngrI.joined(addrtype Addr){
+		dbg("PoCommVirtualFilterM", "PoCommVirtualFilterM: PoNetworkMngrI.joined, addr = 0x%04x\n", Addr);
+		myAddr = Addr;
+	}
+  	event void PoNetworkMngrI.remoteNodeJoined(addrtype Addr){}
+ 	event void PoNetworkMngrI.remoteNodeLeft(addrtype Addr){}
+	event void PoNetworkMngrI.windowUtilizationLow(addrtype Addr){};
+	event void PoNetworkMngrI.windowUtilizationHigh(addrtype Addr){};
+
+}

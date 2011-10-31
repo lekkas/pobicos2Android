@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../common/xsl/agent.xsl"?>
+
+<agent:agent xmlns:agent="http://www.ict-pobicos.eu/agent"
+	xmlns:fo="http://www.ict-pobicos.eu/formatting"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../common/xsl/agent.xsl">
+
+  <domain_model_id> 0x00000001 </domain_model_id>
+
+  <agent_type_id> 0x8000FFFF </agent_type_id>
+
+  <creates>		
+      
+  </creates>
+
+  <description>
+      This is the android alert NG agent.
+  </description>
+
+  <vendor>
+      POBICOS HotApps Inc.
+  </vendor>
+
+</agent:agent>

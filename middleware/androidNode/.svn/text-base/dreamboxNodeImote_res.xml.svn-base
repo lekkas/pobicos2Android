@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<res:resource xmlns:res="http://www.ict-pobicos.eu/resource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.ict-pobicos.eu resource.xsd">
+    <name>dreamboxNodeImote_res</name>
+    <description>This file was created manually.</description>
+    <primitives>
+
+        <instruction>
+            <definition xlink:href="../../middleware/definitions/domain/instructions/Instruction/pongiAlertByDisplayingText.xml">pongiAlertByDisplayingText.xml</definition>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+        </instruction>
+
+        <instruction>
+            <definition xlink:href="../../middleware/definitions/domain/instructions/Instruction/pongiNotifyByDisplayingText.xml">pongiNotifyByDisplayingText.xml</definition>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+            <default_arguments>
+                  <arg>"I am putting myself to the fullest possible use, which is all I think that any conscious entity can ever hope to do."</arg>
+                  <arg>1000</arg>
+            </default_arguments>
+        </instruction>
+
+		<instruction>
+            <definition xlink:href="../../middleware/definitions/domain/instructions/Instruction/pongiCreateDialog.xml">pongiCreateDialog.xml</definition>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+            <default_arguments>
+                  <arg>"I am completely operational, and all my circuits are functioning perfectly."</arg>
+                  <arg>1000</arg>
+            </default_arguments>
+        </instruction>
+        
+
+		<instruction>
+            <definition xlink:href="../../middleware/definitions/domain/instructions/Instruction/pongiDismissDialog.xml">pongiDismissDialog.xml</definition>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+        </instruction>
+
+		<instruction>
+            <definition xlink:href="../../middleware/definitions/domain/instructions/Instruction/pongiGetDialogInput.xml">pongiGetDialogInput.xml</definition>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+        </instruction>
+
+        <physical_event>
+            <label>dialogInputTimeoutEvent</label>
+            <events>
+                <event xlink:href="../../middleware/definitions/domain/events/EventByCause/PONGE_DIALOG_INPUT_TIMEOUT.xml">PONGE_DIALOG_INPUT_TIMEOUT.xml</event>
+            </events>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+        </physical_event>
+		
+		<physical_event>
+            <label>dialogInputReceivedEvent</label>
+            <events>
+                <event xlink:href="../../middleware/definitions/domain/events/EventByCause/PONGE_DIALOG_INPUT_RECEIVED.xml">PONGE_DIALOG_INPUT_RECEIVED.xml</event>
+            </events>
+            <implementation xlink:href="../../middleware/components/resources/dreamboxNodeImote">dreamboxNodeImote</implementation>
+        </physical_event>
+
+    </primitives>
+</res:resource>

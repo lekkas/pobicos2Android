@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../common/xsl/app.xsl"?>
+
+<app:app xmlns:app="http://www.ict-pobicos.eu/app"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../common/xsl/app.xsd">
+
+  <name> AndroidDemoApp </name>
+
+  <root_agent_type_id> 0x00880009 </root_agent_type_id>
+
+  <description>
+      This is a demo app for the Android node.
+  </description>
+
+  <vendor>
+      POBICOS HotApps Inc.
+  </vendor>
+  
+</app:app>

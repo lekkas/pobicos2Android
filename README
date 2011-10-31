@@ -1,0 +1,10 @@
+Contents:
+--------
+
+applications/	: Android demo applications.
+
+directory/	: POBICOS Registry & Forwarder service.
+
+middleware/	: The extra files for the Android platform (NesC code).
+
+PoClient/	: Android application.

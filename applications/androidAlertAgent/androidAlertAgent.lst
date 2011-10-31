@@ -1,0 +1,113 @@
+GAS LISTING /tmp/cc23wUSO.s 			page 1
+
+
+   1               		.file	"androidAlertAgent.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  10               		.data
+  11               	.LC0:
+  12 0000 4C45 4B4B 		.string	"LEKKAS: COULD NOT RESET TIMER."
+  12      4153 3A20 
+  12      434F 554C 
+  12      4420 4E4F 
+  12      5420 5245 
+  13               	.LC1:
+  14 001f 4C45 4B4B 		.string	"LEKKAS: TIMER RESET OK"
+  14      4153 3A20 
+  14      5449 4D45 
+  14      5220 5245 
+  14      5345 5420 
+  15               		.section	.events.PoTimeoutEvent,"ax",@progbits
+  16               	.global	EVENT_PoTimeoutEvent
+  18               	EVENT_PoTimeoutEvent:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21 0000 80E0      		ldi r24,lo8(0)
+  22 0002 40E7      		ldi r20,lo8(6000)
+  23 0004 57E1      		ldi r21,hi8(6000)
+  24 0006 60E0      		ldi r22,hlo8(6000)
+  25 0008 70E0      		ldi r23,hhi8(6000)
+  26 000a 0E94 0000 		call pongiPoSetTimer
+  27 000e 8823      		tst r24
+  28 0010 01F0      		breq .L2
+  29 0012 80E0      		ldi r24,lo8(.LC0)
+  30 0014 90E0      		ldi r25,hi8(.LC0)
+  31 0016 00C0      		rjmp .L5
+  32               	.L2:
+  33 0018 80E0      		ldi r24,lo8(.LC1)
+  34 001a 90E0      		ldi r25,hi8(.LC1)
+  35               	.L5:
+  36 001c 0E94 0000 		call pongiPoDbgString
+  37 0020 0E94 0000 		call pongiAlertByDisplayingText
+  38               	/* epilogue start */
+  39 0024 0895      		ret
+  41               		.data
+  42               	.LC2:
+  43 0036 4C45 4B4B 		.string	"LEKKAS: COULD NOT SET TIMER."
+  43      4153 3A20 
+  43      434F 554C 
+  43      4420 4E4F 
+  43      5420 5345 
+  44               	.LC3:
+  45 0053 4C45 4B4B 		.string	"LEKKAS: TIMER SET OK"
+  45      4153 3A20 
+  45      5449 4D45 
+GAS LISTING /tmp/cc23wUSO.s 			page 2
+
+
+  45      5220 5345 
+  45      5420 4F4B 
+  46               		.section	.events.PoInitEvent,"ax",@progbits
+  47               	.global	EVENT_PoInitEvent
+  49               	EVENT_PoInitEvent:
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52 0000 68E0      		ldi r22,lo8(8)
+  53 0002 70E0      		ldi r23,hi8(8)
+  54 0004 80E0      		ldi r24,hlo8(8)
+  55 0006 90E0      		ldi r25,hhi8(8)
+  56 0008 0E94 0000 		call pongiPoEnableEvent
+  57 000c 80E0      		ldi r24,lo8(0)
+  58 000e 40E7      		ldi r20,lo8(6000)
+  59 0010 57E1      		ldi r21,hi8(6000)
+  60 0012 60E0      		ldi r22,hlo8(6000)
+  61 0014 70E0      		ldi r23,hhi8(6000)
+  62 0016 0E94 0000 		call pongiPoSetTimer
+  63 001a 8823      		tst r24
+  64 001c 01F0      		breq .L7
+  65 001e 80E0      		ldi r24,lo8(.LC2)
+  66 0020 90E0      		ldi r25,hi8(.LC2)
+  67 0022 00C0      		rjmp .L10
+  68               	.L7:
+  69 0024 80E0      		ldi r24,lo8(.LC3)
+  70 0026 90E0      		ldi r25,hi8(.LC3)
+  71               	.L10:
+  72 0028 0E94 0000 		call pongiPoDbgString
+  73 002c 0895      		ret
+GAS LISTING /tmp/cc23wUSO.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 androidAlertAgent.c
+     /tmp/cc23wUSO.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc23wUSO.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc23wUSO.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc23wUSO.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc23wUSO.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc23wUSO.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc23wUSO.s:18     .events.PoTimeoutEvent:00000000 EVENT_PoTimeoutEvent
+     /tmp/cc23wUSO.s:49     .events.PoInitEvent:00000000 EVENT_PoInitEvent
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+pongiPoSetTimer
+pongiPoDbgString
+pongiAlertByDisplayingText
+pongiPoEnableEvent

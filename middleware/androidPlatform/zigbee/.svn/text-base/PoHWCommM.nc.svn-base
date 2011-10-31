@@ -1,0 +1,238 @@
+/*
+*
+* POBICOS - Platform for Opportunistic Behaviour
+* in Incompletely Specified, Heterogeneous Object Communities
+*
+* Contract Number: INFSO-ICT-223984
+* Webpage: www.ict-pobicos.eu
+*
+**************************************************************/
+/**
+* HW-dependent communications module (in PoHWCommC / PoHWSpecNodeIndepC).
+*
+* This module provides the POBICOS communication and network management interfaces for
+* the pc_proxy simulation platform.
+* 
+* @author Mikko Ala-Louko VTT (Design)
+* 
+* @modified 26/01/2011 Version 0.1.
+**/
+
+#include "middleware.h"
+
+#define PO_HW_COMM_MAX_PAYLOAD_LEN		110
+#define PO_LOCAL_TX_BUF_SIZE			20
+
+module PoHWCommM{
+	provides{
+		interface PoReliableTransportI as PoReliableTransportHALI;
+		interface PoDatagramTransportI as PoDatagramTransportHALI;
+		interface PoNetworkMngrI as PoNetworkMngrHALI;
+		interface PoCloseProximityI as PoCloseProximityHALI;
+		interface Init;
+	}
+	uses{
+		interface PoCommPhysicalLayerI;
+		interface Init as TCPInit;
+		interface StdControl as TCPControl;
+    }
+}
+implementation{
+	
+	enum states{
+		S_INITIAL,
+		S_JOINED,
+		S_IDLE
+	};
+	uint8_t mState;
+	addrtype myAddr;
+
+	uint16_t locTxBufLen;
+	uint16_t locTxWritePos;
+	uint16_t locTxReadPos;
+	PoRadioMsg locTxBuf[PO_LOCAL_TX_BUF_SIZE];
+
+	inline error_t writeToTxBuf(PoRadioMsg* msg){
+		if(locTxBufLen < PO_LOCAL_TX_BUF_SIZE){
+			memcpy(locTxBuf+locTxWritePos, msg, sizeof(PoRadioMsg));
+			locTxBufLen++;
+			locTxWritePos = (locTxWritePos+1) % PO_LOCAL_TX_BUF_SIZE;
+			return SUCCESS;
+		}
+		dbg(DBG_WARNING, "PoHWCommM: (line %d) local tx buf. full\n", __LINE__);
+		return FAIL;
+	}
+	
+	inline error_t readFromTxBuf(PoRadioMsg* msg){
+		if(locTxBufLen > 0){
+			memcpy(msg, locTxBuf+locTxReadPos, sizeof(PoRadioMsg));
+			locTxBufLen--;
+			locTxReadPos = (locTxReadPos+1) % PO_LOCAL_TX_BUF_SIZE;
+			return SUCCESS;
+		}
+		dbg(DBG_WARNING, "PoHWCommM: (line %d) local tx buf. empty\n", __LINE__);
+		return FAIL;
+	}
+	
+	task void localTxTask(){
+		PoRadioMsg localMsg;
+		
+		if(readFromTxBuf(&localMsg) == SUCCESS){
+			signal PoDatagramTransportHALI.msgArrived(myAddr, 1, (PoMsg*)&localMsg);
+		}
+		
+		if(locTxBufLen){
+			post localTxTask();
+		}
+	}
+	
+	task void joinTask(){
+		dbg("PoHWCommM", "PoHWCommM: joined with addr 0x%08x\n", myAddr);
+		signal PoNetworkMngrHALI.joined(myAddr);
+	}
+
+	command error_t Init.init(){
+		dbg("INIT", "PoHWCommM\n");
+		
+		locTxBufLen = 0;
+		locTxWritePos = 0;
+		locTxReadPos = 0;
+		
+		mState = S_INITIAL;
+		
+		call TCPInit.init();
+		return call TCPControl.start();
+	}
+
+	command int PoReliableTransportHALI.sendMsg(addrtype Addr, PoMsg_t RelMsg, int Retries, int *MsgID){	
+		//not supported at this layer
+		return PO_COMM_FAIL;
+	}
+	
+	command int PoDatagramTransportHALI.sendMsg(addrtype addr, int maxHops, PoMsg_t poMsg){
+		if(mState == S_INITIAL){
+			dbg("PoHWCommM", "PoHWCommM: not running\n");
+			return PO_COMM_NOT_STARTED;
+		}
+		else if(poMsg->len > PO_HW_COMM_MAX_PAYLOAD_LEN || poMsg->len > MAX_RADIO_MSG_DATA){
+			dbg(DBG_WARNING, "PoHWCommM: (line %d) too long msg (%d)\n", __LINE__, poMsg->len);
+			return PO_COMM_MSG_TOO_LARGE;
+		}
+		else if(addr == myAddr){
+			dbg("PoHWCommM", "PoHWCommM: writing to local loopback buffer\n");
+			
+			if(writeToTxBuf((PoRadioMsg*)poMsg) == SUCCESS){
+				post localTxTask();
+				return PO_COMM_OK;
+			}
+			else{
+				return PO_COMM_NO_RESOURCES;
+			}
+		}
+		else{
+			error_t ret = call PoCommPhysicalLayerI.sendPacket((uint8_t*)(poMsg->data), poMsg->len, myAddr, addr);
+					
+			if(ret == SUCCESS){
+				dbg("PoHWCommM", "PoHWCommM: PoCommPhysicalLayerI.sendPacket SUCCESS\n");
+				return PO_COMM_OK;
+			}
+			else{
+				dbg(DBG_WARNING, "PoHWCommM: (line %d) PoCommPhysicalLayerI.sendPacket FAILED (%d)\n", __LINE__, ret);
+				return PO_COMM_FAIL;
+			}
+		}
+		
+		dbg("PoHWCommM", "PoHWCommM: PO_COMM_NO_RESOURCES\n");
+		
+		return PO_COMM_NO_RESOURCES;
+	}
+
+	command int PoNetworkMngrHALI.getMyNetworkAddr(addrtype *Addr){
+		if(mState != S_INITIAL){
+			*Addr = myAddr;
+			return PO_COMM_OK;
+		}
+		
+		return PO_COMM_NOT_STARTED;
+	}
+	
+	command int PoNetworkMngrHALI.getMyPhysicalAddr(uint8_t *phyAddr){
+		phyAddr[0] = 0x00;
+		phyAddr[1] = 0x00;
+		phyAddr[2] = 0x00;
+		phyAddr[3] = 0x00;
+		phyAddr[4] = 0x00;
+		phyAddr[5] = 0x00;
+		phyAddr[6] = (uint8_t)(TOS_NODE_ID >> 8);
+		phyAddr[7] = (uint8_t)TOS_NODE_ID;
+		return PO_COMM_OK;
+	}
+	
+	command int PoNetworkMngrHALI.setNodeLivenessChecking(addrtype Addr, uint8_t state){
+		return PO_COMM_FAIL;
+	}
+	
+	command int PoNetworkMngrHALI.getNetworkMembers(addrtype **Addr, int *len){
+		return PO_COMM_FAIL;
+	}
+
+	command int PoNetworkMngrHALI.joinNetwork(idtype NetworkID, keytype NetworkKey, addrtype *Addr){
+		//network ID and network key discarded in the AM version
+
+		if(TOS_NODE_ID == 3){
+			myAddr = 0x0000;
+		}
+		else{
+			myAddr = VIRTUAL_POOL_START+TOS_NODE_ID-4;
+		}
+
+		*Addr = myAddr;
+		
+		mState = S_IDLE;
+		
+		post joinTask();
+
+		return PO_COMM_OK;
+	}
+	
+	command int PoNetworkMngrHALI.leaveNetwork(){
+		call TCPControl.stop();
+		return PO_COMM_OK;
+	}
+
+	command int PoCloseProximityHALI.sendMsg(PoRadioMsg_t CPMsg){
+		return PO_COMM_FAIL;
+	}
+	
+	event void PoCommPhysicalLayerI.receivedPacket(uint8_t* payload, uint8_t len, uint16_t source, uint16_t destination){
+		PoRadioMsg rxMsg;
+		//int i;
+		
+		if(destination != myAddr && destination != PO_BROADCAST_ADDR){
+			//dbg(DBG_WARNING, "PoHWCommM: (line %d) destination (0x%04x) != myAddr (0x%04x)\n", __LINE__, destination, myAddr);
+			return;
+		}
+		else if(len > MAX_RADIO_MSG_DATA){
+			dbg(DBG_WARNING, "PoHWCommM: (line %d) received a too large msg (%d)\n", __LINE__, len);
+			return;	
+		}
+		
+		memcpy(rxMsg.data, payload, len);
+		rxMsg.len = len;
+		
+		dbg("PoHWCommM", "PoHWCommM: recv %d B from 0x%04x\n", len, source);
+		
+		/*
+		for(i=0; i< rxMsg.len; i++)
+			dbg("PoHWCommM", "PoHWCommM: rxMsg.data[%d] = 0x%02x\n", i, rxMsg.data[i]);
+		*/
+		
+		signal PoDatagramTransportHALI.msgArrived(source, 1, (PoMsg*)&rxMsg);
+	}
+	
+	event void PoCommPhysicalLayerI.physicalLayerStatusChanged(uint8_t status){
+		if(status == FALSE){
+			dbg(DBG_WARNING, "PoHWCommM: (line %d) phy layer status changed to %d\n", __LINE__, status);
+		}
+	}
+}

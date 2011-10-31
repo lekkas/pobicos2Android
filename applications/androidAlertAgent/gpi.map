@@ -1,0 +1,4 @@
+pongiAlertByDisplayingText = 0x10200;
+pongiPoDbgString = 0x10024;
+pongiPoEnableEvent = 0x10000;
+pongiPoSetTimer = 0x10012;

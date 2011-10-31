@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_exit" 
+    		android:icon="@drawable/powericon1" 
+    		android:title="@string/menu_exit">
+    </item>
+    <item android:id="@+id/menu_pass"
+    		android:icon="@drawable/options"
+    		android:title="@string/menu_pass">
+    </item>
+    
+</menu>
