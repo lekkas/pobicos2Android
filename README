@@ -1,3 +1,15 @@
+Description:
+--------------
+This repository hosts the implementation of the system that was developed 
+for my thesis (March - September 2011 @Uth.gr), titled "Porting the POBICOS 
+middleware to Android mobile phones". POBICOS is an EU-FP7 program that was 
+running for three years, from May 2008 to May 2011. For more information 
+visit www.ict-pobicos.eu.
+
+Currently, the only detailed description of the system is in Greek. Feel free
+to ask a copy of my thesis at kwstasl@gmail.com .
+
+
 Contents:
 --------
 applications/	: Android demo applications.
@@ -8,5 +20,6 @@ middleware/	: The extra files for the Android platform (NesC code). Based on
 		  SVN Revision 3142 of the POBICOS repository. 
 
 PoClient/	: Android application.
+
 
 
