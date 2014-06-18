@@ -18,14 +18,11 @@ Currently, the only detailed description of the system is in Greek.
 
 Contents
 =========
-applications/	: Android demo applications.
-
-directory/	: POBICOS Registry & Forwarder service.
-
-middleware/	: The extra files for the Android platform (NesC code). Based on
-		  SVN Revision 3142 of the POBICOS repository. 
-
-PoClient/	: Android application.
+* <code>applications/</code> Android demo applications.
+* <code>directory/</code> POBICOS Registry & Forwarder service.
+* <code>middleware/</code> The extra files for the Android platform (NesC code). Based on
+				  SVN Revision 3142 of the POBICOS repository. 
+* <code>PoClient/</code> Android application.
 
 
 
