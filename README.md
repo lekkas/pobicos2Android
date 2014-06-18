@@ -13,9 +13,6 @@ This repository hosts the implementation of the system that was developed
 for my thesis (March - September 2011 @Uth.gr), titled "Porting the POBICOS 
 middleware to Android mobile phones". 
 
-Currently, the only detailed description of the system is in Greek. 
-
-
 Contents
 =========
 * <code>applications/</code> Android demo applications.
